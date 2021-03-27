@@ -46,4 +46,17 @@ nsp      = nsp_client(tuple(nsp_host))
 fsp_host = nsp.whereis('{uri.netloc}'.format(uri=parsed_uri))
 
 # init FSP client
-fsp      = fsp_client(fsp_host)
+fsp = fsp_client(
+    fsp_host,
+    domain='{uri.netloc}'.format(uri=parsed_uri),
+    agent='xpleva07'
+)
+
+if '{uri.path}'.format(uri=parsed_uri) == '/*':
+    #download all
+    files = fsp.get_index()
+else:
+    files = ['{uri.path}'.format(uri=parsed_uri)]
+
+for file in files:
+    fsp.get(file, target=file)

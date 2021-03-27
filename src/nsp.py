@@ -40,7 +40,7 @@ class client:
             raise Exception("NSP :: Bad Syntax in return address")
 
         # ip, port
-        return (res[0], res[1])
+        return (res[0], int(res[1]))
 
     ##
     # Function send string as ASCII to server
