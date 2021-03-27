@@ -8,6 +8,7 @@ from fsp import client as fsp_client
 from urllib.parse import urlparse
 from getopt import getopt
 import sys
+import os
 
 # get params from CLI
 opts, _ = getopt(sys.argv[1:], "n:f:")
@@ -56,7 +57,10 @@ if '{uri.path}'.format(uri=parsed_uri) == '/*':
     #download all
     files = fsp.get_index()
 else:
-    files = ['{uri.path}'.format(uri=parsed_uri)]
+    files = ['{uri.path}'.format(uri=parsed_uri)[1:]]
 
 for file in files:
+    if os.path.dirname(file) != '' and not os.path.exists(os.path.dirname(file)):
+        os.makedirs(os.path.dirname(file))
+
     fsp.get(file, target=file)
