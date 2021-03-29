@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Project: IPK1
 ## 
 # basic NSP client class implementation
