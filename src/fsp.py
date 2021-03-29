@@ -111,7 +111,7 @@ class client:
         header.status   = str_header[0][1].lower()
 
         if header.status != "success":
-            raise Exception("FSP :: Server return status {}".format(header.status))
+            raise Exception("FSP :: Server return status {}".format(' '.join(str_header[0])))
 
         header.body_len = int(str_header[1].lower().replace("length:", ""))
 
