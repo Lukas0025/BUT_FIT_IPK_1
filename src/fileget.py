@@ -23,7 +23,11 @@ for opt, arg in opts:
         nsp_host = arg
 
 if path == None or nsp_host == None:
-    print("need -f -n")
+    print("Simple GET only FSP client with NSP support")
+    print()
+    print("you must use -f and -n")
+    print("-f address of file on FPS server")
+    print("-n address of NSP server")
     exit(1)
 
 # parse params
@@ -34,6 +38,7 @@ if len(nsp_host) != 2:
     print("bad NSP address")
     exit(1)
 
+#port
 nsp_host[1] = int(nsp_host[1])
 
 parsed_uri = urlparse(path)

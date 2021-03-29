@@ -6,10 +6,11 @@
 import socket
 
 class client:
-    def __init__(self, server, domain, agent):
-        self.server = server
-        self.domain = domain
-        self.agent  = agent
+    def __init__(self, server, domain, agent, timeout=10):
+        self.server  = server
+        self.domain  = domain
+        self.agent   = agent
+        self.timeout = timeout
 
     ##
     # Create TCP connection with FSP server
@@ -20,6 +21,7 @@ class client:
             type=socket.SOCK_STREAM # TCP
         )
 
+        self.sock.settimeout(self.timeout)
         self.sock.connect(self.server)
 
     ##
