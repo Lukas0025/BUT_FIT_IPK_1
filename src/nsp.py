@@ -28,7 +28,7 @@ class client:
         res = self._read()
 
         if "ERR Not Found" in res:
-            raise Exception("NSP :: Not Found")
+            raise Exception("NSP :: Not Found {}".format(name))
         elif "ERR Syntax" in res:
             raise Exception("NSP :: Bad Syntax")
         elif not(res.startswith("OK ")):
