@@ -13,9 +13,8 @@ self-test:
 	python3 ../src/fileget.py -n 147.229.176.19:3333 -f fsp://blue.server/000052.xls && \
 	python3 ../src/fileget.py -n 147.229.176.19:3333 -f fsp://red.server/index && \
 	python3 ../src/fileget.py -n 147.229.176.19:3333 -f fsp://green.server/* && \
-	zip out.zip *
+	zip -r out.zip *
 	mv self-test/out.zip ./
-	rm -rf self-test
 
 serv:
 	cd test && ./fsptest -r ipkdata/ -p 127.0.0.1:3333
@@ -24,3 +23,4 @@ clean:
 	rm -f src.zip
 	rm -rf src/__pycache__
 	rm -f out.zip
+	rm -rf self-test
