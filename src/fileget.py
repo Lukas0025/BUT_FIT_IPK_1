@@ -39,34 +39,38 @@ if len(nsp_host) != 2:
     print("bad NSP address")
     exit(1)
 
-#port
-nsp_host[1] = int(nsp_host[1])
+try:
+    #port
+    nsp_host[1] = int(nsp_host[1])
 
-parsed_uri = urlparse(path)
+    parsed_uri = urlparse(path)
 
-if '{uri.scheme}'.format(uri=parsed_uri) != "fsp":
-    print("bad Protocol fsp is only supported")
+    if '{uri.scheme}'.format(uri=parsed_uri) != "fsp":
+        print("bad Protocol fsp is only supported")
+        exit(1)
+
+    # init nsp client and get FSP addr
+    nsp      = nsp_client(tuple(nsp_host))
+    fsp_host = nsp.whereis('{uri.netloc}'.format(uri=parsed_uri))
+
+    # init FSP client
+    fsp = fsp_client(
+        fsp_host,
+        domain='{uri.netloc}'.format(uri=parsed_uri),
+        agent='xpleva07'
+    )
+
+    if '{uri.path}'.format(uri=parsed_uri) == '/*':
+        #download all
+        files = fsp.get_index()
+    else:
+        files = ['{uri.path}'.format(uri=parsed_uri)[1:]]
+
+    for file in files:
+        if os.path.dirname(file) != '' and not os.path.exists(os.path.dirname(file)):
+            os.makedirs(os.path.dirname(file))
+
+        fsp.get(file, target=file)
+except:
+    print("error:", sys.exc_info()[0])
     exit(1)
-
-# init nsp client and get FSP addr
-nsp      = nsp_client(tuple(nsp_host))
-fsp_host = nsp.whereis('{uri.netloc}'.format(uri=parsed_uri))
-
-# init FSP client
-fsp = fsp_client(
-    fsp_host,
-    domain='{uri.netloc}'.format(uri=parsed_uri),
-    agent='xpleva07'
-)
-
-if '{uri.path}'.format(uri=parsed_uri) == '/*':
-    #download all
-    files = fsp.get_index()
-else:
-    files = ['{uri.path}'.format(uri=parsed_uri)[1:]]
-
-for file in files:
-    if os.path.dirname(file) != '' and not os.path.exists(os.path.dirname(file)):
-        os.makedirs(os.path.dirname(file))
-
-    fsp.get(file, target=file)
